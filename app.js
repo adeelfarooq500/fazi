@@ -6,11 +6,15 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const cookieParser = require('cookie-parser');
 const User = require('./model/user');
+const Review = require('./model/review');
+const Product = require('./model/product');
 // const uuid = require('uuid/v4');
 const multer = require('multer');
 
 const sequelize = require('./db');
-
+const ProductRoute = require('./routes/product')
+const ReviewRoute = require('./routes/review')
+const UserRoute = require('./routes/user')
 const app = express();
 // ExtractJwt to help extract the token
 let ExtractJwt = passportJWT.ExtractJwt;
@@ -78,7 +82,9 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use((req, res, next) => {
     res.status(404).json('404 api not found');
   });
-
+app.use(ProductRoute)
+app.use(ReviewRoute)
+app.use(UserRoute)
 sequelize
   .sync({ force: true })
   //.sync()
